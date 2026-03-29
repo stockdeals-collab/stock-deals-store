@@ -1,0 +1,40 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Sample products for STOCK DEALS
+app.get('/api/products', (req, res) => {
+  res.json([
+    {
+      _id: '1',
+      name: 'Gaming Headset Deal',
+      price: 49,
+      salePrice: 29,
+      images: ['https://images.unsplash.com/photo-1579710039144-85d56a954b9b'],
+      stock: 47,
+      readyToShip: true,
+      shipping: { usa: { price: 5, days: [2,4] }, uk: { price: 8, days: [3,5] } }
+    },
+    {
+      _id: '2', 
+      name: 'Wireless Mouse Stock',
+      price: 35,
+      salePrice: 19,
+      images: ['https://images.unsplash.com/photo-1583394838336-acd977736f90'],
+      stock: 123,
+      readyToShip: true
+    }
+  ]);
+});
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/stockdeals')
+  .then(() => console.log('🛒 STOCK DEALS DB Connected!'));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🔥 STOCK DEALS API: http://localhost:${PORT}`));
+
